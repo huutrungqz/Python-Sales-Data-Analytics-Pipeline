@@ -1,69 +1,68 @@
-# Python-Sales-Data-Analytics-Pipeline
-
-# UNIGAP - PORTFOLIO BUILDING MODULE - SQL/ PYTHON PROJECT
-
-🔥Use this template as an outline for your SQL/ Python Github projects - which is task by task type of projects. 
-Make a copy of this readme file and tailor it your own. Happy portfolio-ing and start applying aggressively :"))
-
-Updated: Nov'25
-
----
-![KPMG Transaction Analysis](https://github.com/Dorothy-Ho-Vy/Sample_SQL_Python_template/blob/4dee6ff56077b90b1aea82e8517136f7185a77a3/Blue%20White%20Modern%20Payment%20Gateway%20Service%20Twitter%20Post.png.crdownload)
-
-👉🏻Change Icon emoji 🔥🔍📘🚩 to your likings by clicking "Start" + "."
-
-# 📊 Your Project Name [ Business question + Domain + Tools ]  
-
- _Example:_
- _Analyze Customer segmentation of Sprocket Central - a medium size bikes accessories organization | Python_
- 
-_+ Business question: The core problem that this project solves ->  Customer segmentation_
-
-_+ Domain: Domain/ Industry that this projects focus on --> a medium size bikes accessories organization tức công ty sản xuất và thương mại_
-
-**_📌You need to show that your projects are applicable to real business use cases, for a particular industry, not just "learning projects"_**
+# 📊 Sales Analytics Data Warehouse Pipeline
+### Building an End-to-End Sales Data Warehouse using Python & PostgreSQL
   
-Author: [Your Name]  
-Date: YYYY-MM-DD  
-Tools Used: SQL/ Python  
+Author: Nguyen Huu Trung  
+Tools: Python, PostgreSQL, SQL, Pandas, SQLAlchemy
 
 ---
 
 ## 📑 Table of Contents  
-1. [📌 Background & Overview](#-background--overview)  
-2. [📂 Dataset Description & Data Structure](#-dataset-description--data-structure)
-4. [🔎 Final Conclusion & Recommendations](#-final-conclusion--recommendations)
+1. Background & Overview
+2. Dataset Description
+3. Data Warehouse Architecture
+4. ETL Pipeline
+5. Data Modeling
+6. SQL Analytics
+7. Project Structure
+8. Technologies Used
+9. Key Business Outcomes
 
 ---
 
-## 📌 Background & Overview  
+# 📌 Background & Overview
 
-### Objective:
-### 📖 What is this project about? What Business Question will it solve?
+## Business Problem
 
-Clearly outline what this project does, what business questions the project will solve. 
+FMCG distributors generate sales data from multiple operational systems such as:
 
-- Provide a brief introduction - Write in bullet point format
-- Point out the main business question
+- Sales transactions
+- Product master
+- Customer master
+- Sales targets
+- Promotions
+- Distributor orders
+- Returns
+- Employee information
+- Territory mapping
+  
+These datasets are stored separately, making it difficult for analysts to produce reliable business reports.
+This project builds an end-to-end analytics pipeline that integrates multiple data sources into a centralized Data Warehouse for business reporting and decision-making.
 
+## Project Objectives
 
- _Example:_
-  This project uses Python to analyze transaction data from KPMG to:
+This project aims to:
 
-✔️ Identify the behavior in customer's first transaction.  
-✔️ Provide actionable insights to increase retention rate   
- 
+- Build an automated ETL pipeline using Python.
+- Load raw data into a PostgreSQL Data Warehouse.
+- Transform data through Bronze → Silver → Gold layers.
+- Design a Star Schema for analytics.
+- Create fact and dimension tables.
+- Build analytical data marts for business reporting.
+- Enable sales performance analysis using SQL.
 
+---
 
-### 👤 Who is this project for?  
+## Business Questions
 
-Mention who might benefit from this project 
+This project helps answer questions such as:
 
- _Example:_
-
-✔️ Data analysts & business analysts  
-✔️ Decision-makers & stakeholders  
-
+- How are sales performing against targets?
+- Which distributors contribute the highest revenue?
+- Which products generate the most sales?
+- Which customers contribute the most revenue?
+- What is the product return rate?
+- Which employees achieve the highest sales performance?
+- Which territories perform best?
 
 
 ---
@@ -71,39 +70,63 @@ Mention who might benefit from this project
 ## 📂 Dataset Description & Data Structure  
 
 ### 📌 Data Source  
-- Source: (Mention where the dataset is obtained from—Kaggle, company database, government sources, etc.)  
-- Size: (Mention the number of rows & columns)  
-- Format: (.csv, .sql, .xlsx, etc.)  
+FMCG Distribution dataset.
+Format
+- CSV
+- XLSX
+
+Data includes ten business entities.
+
 
 ### 📊 Data Structure & Relationships  
 
 #### 1️⃣ Tables Used:  
-Mention how many tables are in the dataset.  Only mention tables that you actually used from the entire dataset. 
 
-#### 2️⃣ Table Schema & Data Snapshot  
+| Sales Transactions |
+| Sales Target Plan |
+| Customer Master |
+| Product Master |
+| Distributor Orders |
+| Distributor Master |
+| Employee Master |
+| Territory Mapping |
+| Return Transactions |
+| Promotion Program |
 
-Table 1: Products Table  
+# 🏗 Data Warehouse Architecture
 
-👉🏻 Insert a screenshot of table schema 
-
-**_📌If the table is too big, only capture a part of it that contains key metrics you used in the projects or put the table in toggle_**
-
- _Example:_
-
-| Column Name | Data Type | Description |  
-|-------------|----------|-------------|  
-| Product_ID  | INT      | Unique identifier for each product |  
-| Name        | TEXT     | Product name |  
-| Category    | TEXT     | Product category |  
-| Price       | FLOAT    | Price per unit |  
-
-
-Table 2: Sales Transactions  
-
-👉🏻 Insert a screenshot of table schema.
-
+```
+Raw Files
+      │
+      ▼
+Python ETL
+      │
+      ▼
+Bronze Layer
+      │
+SQL Cleaning
+      ▼
+Silver Layer
+      │
+Business Modeling
+      ▼
+Gold Layer
+      │
+      ├── Fact Sales
+      ├── Fact Returns
+      ├── Fact Targets
+      ├── Dim Customers
+      ├── Dim Products
+      ├── Dim Employees
+      ├── Dim Distributors
+      └── Dim Date
+             │
+             ▼
+Business Data Marts
+```
 
 ---
+
 
 ## ⚒️ Main Process
 
