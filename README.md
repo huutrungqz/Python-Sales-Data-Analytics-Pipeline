@@ -125,6 +125,21 @@ Gold Layer
 Business Data Marts
 ```
 
+# 📁 Project Structure
+
+```text
+Python-Sales-Data-Analytics-Pipeline/
+│
+├── 1. etl/          # Python ETL scripts
+├── 2. sql/          # SQL transformations & analytics
+├── data/            # Source datasets
+├── logs/            # ETL logs
+├── .env.example     # Environment variables template
+├── .gitignore
+├── requirements.txt
+└── README.md
+```
+
 ---
 
 
