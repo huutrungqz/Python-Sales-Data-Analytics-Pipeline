@@ -6,7 +6,7 @@ Tools: Python, PostgreSQL, SQL, Pandas, SQLAlchemy
 
 ---
 
-## 📑 Table of Contents  
+# 📑 Table of Contents  
 1. Background & Overview
 2. Dataset Description
 3. Data Warehouse Architecture
@@ -93,7 +93,7 @@ Data includes ten business entities.
 | Return Transactions |
 | Promotion Program |
 
-# 🏗 Data Warehouse Architecture
+### 🏗 Data Warehouse Architecture
 
 ```
 Raw Files
@@ -125,7 +125,7 @@ Gold Layer
 Business Data Marts
 ```
 
-# 📁 Project Structure
+## 📁 Project Structure
 
 ```text
 Python-Sales-Data-Analytics-Pipeline/
@@ -143,7 +143,7 @@ Python-Sales-Data-Analytics-Pipeline/
 ---
 
 
-## ⚒️ Main Process
+# ⚒️ Main Process
 
 1️⃣ Data Cleaning & Preprocessing  
 2️⃣ Exploratory Data Analysis (EDA)  
