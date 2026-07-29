@@ -1,0 +1,17 @@
+2026-06-20 17:07:36,265 - INFO - Load table_name: sales_transactions successfully
+2026-06-20 17:18:50,328 - INFO - Load table_name: sales_target_plan successfully
+2026-06-20 17:21:28,533 - INFO - Load table_name: sales_target_plan errror: 'DataFrame' object has no attribute 'concat'
+2026-06-20 17:21:44,281 - INFO - Load table_name: sales_target_plan errror: concat() takes 1 positional argument but 2 were given
+2026-06-20 17:22:13,582 - INFO - Load table_name: sales_target_plan successfully
+2026-06-20 17:23:24,802 - INFO - Load table_name: sales_target_plan successfully
+2026-06-20 17:27:52,792 - INFO - Load table_name: customer_master successfully
+2026-06-20 17:30:39,894 - INFO - Load table_name: product_master successfully
+2026-06-20 17:35:15,452 - INFO - Load table_name: distributor_orders successfully
+2026-06-20 17:36:33,000 - INFO - Load table_name: distributor_master successfully
+2026-06-20 17:37:17,075 - INFO - Load table_name: product_master errror: 'utf-8' codec can't decode byte 0xb8 in position 10: invalid start byte
+2026-06-20 17:38:15,658 - INFO - Load table_name: customer_master successfully
+2026-06-20 17:38:30,234 - INFO - Load table_name: product_master successfully
+2026-06-20 17:39:16,100 - INFO - Load table_name: employee_master successfully
+2026-06-20 17:40:47,175 - INFO - Load table_name: territory_mapping successfully
+2026-06-20 17:41:30,071 - INFO - Load table_name: return_transactions successfully
+2026-06-20 17:42:29,733 - INFO - Load table_name: promotion_program successfully
