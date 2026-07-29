@@ -135,9 +135,6 @@ Python-Sales-Data-Analytics-Pipeline/
 ├── data/            # Source datasets
 ├── logs/            # ETL logs
 ├── .env.example     # Environment variables template
-├── .gitignore
-├── requirements.txt
-└── README.md
 ```
 
 ---
