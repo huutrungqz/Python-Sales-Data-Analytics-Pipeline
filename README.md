@@ -142,66 +142,201 @@ Python-Sales-Data-Analytics-Pipeline/
 
 # ⚒️ Main Process
 
-1️⃣ Data Cleaning & Preprocessing  
-2️⃣ Exploratory Data Analysis (EDA)  
-3️⃣ SQL/ Python Analysis 
+## Step 1: Data Ingestion (Python ETL)
 
-👉🏻 First, explain codes' purpose - what they do in 1, 2 short sentences.
+### Purpose
 
-*_Example_*
+The ETL layer is responsible for extracting raw business data from CSV/Excel files and loading them into the PostgreSQL **Bronze Layer (`raw` schema)**.
 
-## Task 1: Analyze bounce rate...
+Each source dataset is processed independently to ensure data traceability and simplify future maintenance.
 
-Bounce rate represents the percentage of website sessions where users visit only one page and leave without interacting further with the site. A high bounce rate can indicate that visitors are not [....]
+### Workflow
 
-**_📌You need to show your understanding/ thinking process when you do this analysis. In the above exp, I explain the meaning of Bounce Rate in Marketing performance analysis - which demonstrates my understanding about the metric & its role in my projects/ flow of analysis"_**
-**_📌If the task is just simple as "Remove duplication, Replace null value.."--> Summarize all steps related to Transforming & Cleaning data steps in a group & explain shortly at once the reason why you need that transformation_**
+- Load database credentials from .env file
+- Establish a PostgreSQL connection using SQLAlchemy
+- Read source files with Pandas
+- Load raw data into the `raw` schema
+- Record ETL execution status through logging
 
-👉🏻 Then how your query/ code & Insert screenshots of your result
+### Python Implementation
 
- **_If your result is a very long table with many records, only show top 5/10 and bottom 5/10 rows, or records that relevant to the insights/ observation below_**
+```python
+from dotenv import load_dotenv
+import os
+import pandas as pd
+from sqlalchemy import create_engine
+import logging
 
-*_Example_*
+logging.basicConfig(
+    filename='ingestion_log.txt',
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
 
-### Project Results:
+load_dotenv()
 
-| Period   | Name                | Count Items | Count Orders | Sales        |
-|:---------|:--------------------|------------:|-------------:|-------------:|
-| Apr 2014 | Bib-Shorts          |           4 |            1 |       233.97 |
-| Feb 2014 | Bib-Shorts          |           4 |            2 |       233.97 |
-| Jul 2013 | Bib-Shorts          |           2 |            1 |       116.99 |
-| Jun 2013 | Bib-Shorts          |           2 |            1 |       116.99 |
-| Apr 2014 | Bike Racks          |          45 |           45 |     5,400.00 |
-| Aug 2013 | Bike Racks          |         222 |           63 |    17,387.18 |
-| Dec 2013 | Bike Racks          |         162 |           48 |    12,582.29 |
-| Feb 2014 | Bike Racks          |          27 |           27 |     3,240.00 |
-| Jan 2014 | Bike Racks          |         161 |           53 |    12,840.00 |
-| Jul 2013 | Bike Racks          |         422 |           75 |    29,802.30 |
-| ...      | ...                 |         ... |          ... |          ... |
-| May 2014 | Vests               |         610 |          103 |    23,640.71 |
-| Nov 2013 | Vests               |         315 |           75 |    12,937.24 |
-| Oct 2013 | Vests               |         611 |           93 |    23,255.74 |
-| Sep 2013 | Vests               |         623 |          102 |    24,100.47 |
-| Jul 2013 | Wheels              |           4 |            1 |       698.63 |
-| Jun 2013 | Wheels              |           3 |            1 |       450.91 |
-| Sep 2013 | Wheels              |           1 |            1 |        83.30 |
+HOST = os.getenv("DB_HOST")
+PORT = os.getenv("DB_PORT")
+USER = os.getenv("USER_NAME")
+PWD = os.getenv("DB_PASSWORD")
+DB = os.getenv("DB_DBNAME")
 
-*A summary of the full results. The complete dataset is available in the repository.*
+engine = create_engine(
+    f'postgresql+psycopg2://{USER}:{PWD}@{HOST}:{PORT}/{DB}'
+)
 
-👉🏻 Finally, explain your observations/ findings from the results 
-  
- _Describe trends, key metrics, and patterns._  
+file_path = r'...\SRC01_sales_transactions.csv'
+table_name = 'sales_transactions'
+
+def extract_raw_csv(file_path):
+    return pd.read_csv(file_path)
+
+try:
+    table = extract_raw_csv(file_path)
+
+    table.to_sql(
+        name=table_name,
+        con=engine,
+        if_exists='replace',
+        schema='raw'
+    )
+
+    logging.info(f'Load {table_name} successfully')
+
+except Exception as e:
+    logging.error(e)
+```
+
+### Output
+
+*(Insert screenshot of PostgreSQL raw.sales_transactions table.)*
+
+### Observation
+
+All source datasets are successfully ingested into the Bronze layer while preserving the original business data.
+
+
+## Step 2: Data Cleaning & Transformation (Bronze → Silver)
+
+### Purpose
+
+The Bronze tables contain raw operational data that may include inconsistent formats and data types.
+
+The transformation process standardizes the data into clean, analysis-ready tables stored in the **Silver Layer**.
+
+### Main Transformations
+
+- Standardize data types
+- Convert date columns
+- Convert numeric values
+- Handle null values
+- Remove unnecessary columns
+- Apply business rules
+- Create cleaned Silver tables
+
+### Example SQL
+
+```sql
+CREATE TABLE silver.sales_transactions AS
+
+SELECT
+    order_id,
+    order_date::date,
+    customer_id,
+    employee_id,
+    product_id,
+    quantity::int,
+    unit_price::numeric,
+    net_amount::numeric
+FROM raw.sales_transactions;
+```
+
+### Output
+
+*(Insert screenshot of silver.sales_transactions.)*
+
+### Observation
+
+The Silver layer provides standardized datasets that are consistent and reusable across multiple analytical scenarios.
+
+
+## Step 3: Data Warehouse Modeling (Silver → Gold)
+
+### Purpose
+
+Instead of querying transactional tables directly, this project adopts a **Star Schema** to improve analytical performance and simplify business reporting.
+
+Dimension tables provide descriptive attributes, while fact tables store measurable business events.
+
+### Data Model
+
+Dimension Tables
+
+- dim_customers
+- dim_products
+- dim_distributors
+- dim_employees
+- dim_date
+
+Fact Tables
+
+- fact_sales
+- fact_returns
+- fact_targets
+
+### Example SQL
+
+```sql
+CREATE TABLE gold.fact_sales AS
+
+SELECT
+    customer_key,
+    product_key,
+    employee_key,
+    distributor_key,
+    date_key,
+    quantity,
+    sales_amount
+FROM silver.sales_transactions;
+```
+
+### Business Data Marts
+
+The Gold layer is further transformed into analytical data marts such as:
+
+- mart_sales_vs_target
+- mart_distributor_performance
+
+### Output
+
+*(Insert Star Schema image and a screenshot of one Data Mart.)*
+
+### Observation
+
+The Star Schema enables efficient analytical queries and provides a solid foundation for dashboards and KPI reporting.
+
+# 🔎 Final Conclusion & Recommendations
+
+## Project Summary
+
+This project demonstrates the development of an end-to-end Sales Analytics Data Warehouse using Python and PostgreSQL.
+
+Starting from multiple raw business datasets, the project automates the ETL process, standardizes raw operational data, and transforms it into a Star Schema that supports analytical reporting.
+
+The final output consists of reusable fact tables, dimension tables, and business data marts that provide a scalable foundation for future reporting and dashboard development.
 
 ---
 
-## 🔎 Final Conclusion & Recommendations  
+## Key Achievements
 
-👉🏻 Based on the insights and findings above, we would recommend the [stakeholder team] to consider the following:  
+✔ Developed an automated ETL pipeline using Python.
 
-📍 Key Takeaways:  
-✔️ Recommendation 1  
-✔️ Recommendation 2  
-✔️ Recommendation 3
+✔ Successfully ingested multiple business datasets into the PostgreSQL Bronze layer.
 
-**_📌Remember to summarize the most core insights/ observations you extract from the entire projects. 
- Recap ONLY key actions/ recommendations. DO NOT copy paste everything above_**
+✔ Standardized and transformed raw operational data into the Silver layer.
+
+✔ Designed a Star Schema with fact and dimension tables.
+
+✔ Built analytical data marts to support business reporting.
+
+✔ Applied Data Warehouse concepts using the Bronze → Silver → Gold architecture.
