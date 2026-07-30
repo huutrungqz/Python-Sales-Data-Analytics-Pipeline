@@ -209,7 +209,7 @@ except Exception as e:
 
 ### Output
 
-*(Insert screenshot of PostgreSQL raw.sales_transactions table.)*
+![Step 1](screenshots/Step_1_Data_Ingestion.png)
 
 ### Observation
 
@@ -253,7 +253,7 @@ FROM raw.sales_transactions;
 
 ### Output
 
-*(Insert screenshot of silver.sales_transactions.)*
+![Step 2](screenshots/Step_2_Data_Cleaning_Transformation.png)
 
 ### Observation
 
@@ -309,7 +309,7 @@ The Gold layer is further transformed into analytical data marts such as:
 
 ### Output
 
-*(Insert Star Schema image and a screenshot of one Data Mart.)*
+![Step 3](screenshots/Step_3_Data_Warehouse.png)
 
 ### Observation
 
